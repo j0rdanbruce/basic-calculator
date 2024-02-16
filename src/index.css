@@ -39,10 +39,20 @@ body {
   border-color: aqua;*/
   position: absolute;
   right: 0;
+  margin-top: 20px;
   margin-right: 10px;
   z-index: 2;
   width: fit-content;
+  font-size: 36px;
+}
+
+.operation-sign {
+  position: absolute;
+  left: 5px;
+  margin-top: 0;
+  z-index: 2;
   font-size: 30px;
+  color: rgb(46, 44, 44);
 }
 
 .button-board {
@@ -61,15 +71,21 @@ body {
   position: relative;
   z-index: 1;
   top: 100px;
-  left: 120px;
+  left: 70px;
   margin: 3px;
-  height: 37px;
-  width: 37px;
+  height: 60px;
+  width: 60px;
   border-radius: 9px;
+  font-size: 30px;
+}
+
+.button:hover {
+  background-color: rgb(131, 128, 128);
 }
 
 .clrBtn {
   background-color: red;
+  font-size: 25px;
 }
 
 .calculateBtn {

@@ -23,13 +23,16 @@ function calculate(operator1, operator2, operation) {
 function Screen({calculation}) {
     return (
         <div className="screen">
+            <OperationSign value={calculation.operation}/>
             <p className="screen-display">{calculation.finalCalc ? calculation.result : calculation.number}</p>
         </div>
     );
 }
 
-const OperationBox = ({operation}) => {
-    
+const OperationSign = ({value}) => {
+    return (
+        <p className="operation-sign">{value ? value : ""}</p>
+    );
 };
 
 function Button({buttonType, value, onDigitBtnClick, onClearBtnClick, onEnterBtnClick}) {
@@ -54,26 +57,49 @@ function Calculator() {
     });
 
     function handleDigitBtnClick(digit) {
-        setCalc({
-            ...calculation,
-            number: parseInt("" + calculation.number + digit),
-        });
+        if (calculation.finalCalc) {
+            calculation.finalCalc = false;
+        }
+        if (calculation.number === 0) {
+            setCalc({
+                ...calculation,
+                number: "" + digit,
+            });
+        } else {
+            setCalc({
+                ...calculation,
+                number: "" + calculation.number + digit,
+            });
+        }
+        
     }
 
     function handleOperationBtnClick(operation) {
-        setCalc({
-            ...calculation,
-            operation: operation,
-            result: calculation.number,
-            number: 0
-        });
+        if (calculation.finalCalc) {
+            setCalc({
+                ...calculation,
+                operation: operation,
+                number: 0,
+                finalCalc: false,
+            });
+        } else {
+            setCalc({
+                ...calculation,
+                operation: operation,
+                result: calculation.number,
+                number: 0,
+            });
+        }
+        
     }
 
     function handleEnterBtnClick() {
         setCalc({
             ...calculation,
             finalCalc: true,
-            result: parseInt(calculate(calculation.result, calculation.number, calculation.operation)),
+            result: parseFloat(calculate(+(calculation.result), +(calculation.number), calculation.operation)),
+            number: 0,
+            operation: undefined,
         });
     }
 
@@ -95,7 +121,7 @@ function Calculator() {
                     <Button value={7} onDigitBtnClick={() => handleDigitBtnClick(7)} />
                     <Button value={8} onDigitBtnClick={() => handleDigitBtnClick(8)} />
                     <Button value={9} onDigitBtnClick={() => handleDigitBtnClick(9)} />
-                    <Button value={'\u00F7'} onDigitBtnClick={() => handleDigitBtnClick('/')} />
+                    <Button value={'\u00F7'} onDigitBtnClick={() => handleOperationBtnClick('/')} />
                 </div>
                 <div className="board-row">
                     <Button value={4} onDigitBtnClick={() => handleDigitBtnClick(4)} />
@@ -110,7 +136,7 @@ function Calculator() {
                     <Button value={'-'} onDigitBtnClick={() => handleOperationBtnClick('-')} />
                 </div>
                 <div className="board-row">
-                    <Button value={0} onDigitBtnClick={() => handleDigitBtnClick(1)} />
+                    <Button value={0} onDigitBtnClick={() => handleDigitBtnClick(0)} />
                     <Button value={'.'} onDigitBtnClick={() => handleDigitBtnClick('.')} />
                     <Button value={'neg'} onDigitBtnClick={() => handleDigitBtnClick('-')} />
                     <Button value={'+'} onDigitBtnClick={() => handleOperationBtnClick('+')} />
